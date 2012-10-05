@@ -9,4 +9,4 @@ To Compile:
   - make mapreduce-project
   - erl
   - cd(ebin).
-  - word_counter:count(tags)
+  - word_counter:count(tags).
