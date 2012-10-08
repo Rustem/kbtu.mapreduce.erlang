@@ -4,18 +4,23 @@
 -import(utilities, [list_files/1, read/1, read/2, printDict/1]).
 -import(map_reduce, [start_map_reduce/3]).
 %% define constants
--define(PUNCT_RE, ",!-=+|.? \\'").
+-define(PUNCT_RE, " \t\n\r,.;:-!?\"'()").
 
 %% Word frequency word_counter
 count(DirName) ->
     CountFiles = list_files(DirName),
-    Result = start_map_reduce(CountFiles, fun map_text/3, fun reduce_words/3),
-    printDict(Result).
+    Result = start_map_reduce(CountFiles, fun map_text/3, fun reduce_words/3).
+    % printDict(Result).
 
 map_text(_Index, FileName, Emit) ->
     io:format("FileName ~p", [FileName]),
     {ok, Words} = read(FileName),
-    lists:foreach(fun (Word) -> Emit(Word, 1) end, Words).
+    lists:foreach(fun (Word) -> 
+            if
+                Word /= "" -> Emit(Word, 1);
+                Word == "" -> false
+            end
+        end, Words).
 % Emit all [K, V] pairs: [K, V] -> [Word, freq] ->[Word, 1]
 map_words(_Index, FileName, Emit) ->
     {ok, [Words]} = file:consult(FileName),

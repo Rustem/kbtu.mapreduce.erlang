@@ -4,7 +4,7 @@
 -import(lists, [foreach/2]).
 -import(string, [to_lower/1, tokens/2]).
 
--define(PUNCT_RE, ",!-=+|.? \\'").
+-define(PUNCT_RE, " \t\n\r,.;:-!?\"'()").
 
 printDict(Dict) ->
     List = dict:to_list(Dict),
