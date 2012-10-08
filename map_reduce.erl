@@ -57,7 +57,7 @@ spawn_workers(MasterPid, Fun, Input) ->
     foreach(fun({K, V}) -> 
                 spawn_link(fun() -> worker(MasterPid, Fun, {K, V}) end)
             end, Input).
-
+    
 % Must send {K2, V2} and terminate
 worker(MasterPid, Fun, {K, V}) ->
     Fun(K, V, fun(K2, V2) -> MasterPid ! {K2, V2} end).

@@ -1,5 +1,5 @@
 -module(utilities).
--export([list_files/1, read/1, read/2, printDict/1]).
+-export([list_files/1, read/1, read/2, printDict/1, query_index/2]).
 
 -import(lists, [foreach/2]).
 -import(string, [to_lower/1, tokens/2]).
@@ -40,3 +40,7 @@ read(File, L) ->
     catch
         Ex:Type -> {Ex, Type, erlang:get_stacktrace()}
     end.
+
+% utility funct
+query_index(Index, Word) ->
+    dict:find(Word, Index).

@@ -1,4 +1,4 @@
-SOURCES=map_reduce.erl word_counter.erl utilities.erl
+SOURCES=map_reduce.erl word_counter.erl inverted_index.erl utilities.erl
 OBJECTS=$(SOURCES:.erl=.beam)
 ebin:
 	mkdir ebin
