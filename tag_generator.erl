@@ -7,7 +7,6 @@
 -define(PUNCT_RE, " \t\n\r,.;:-!?\"'()").
 
 %% Word frequency word_counter
-% 
 count(ListOfDocuments) ->
     CountFiles = get_documents(ListOfDocuments),
     Result = start_map_reduce(CountFiles, fun get_mapping_tags/3, fun tag_popularity/3).
