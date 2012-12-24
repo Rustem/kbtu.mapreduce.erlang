@@ -28,6 +28,7 @@ read(File) ->
     TokensToProcess = read(IODevice, []),
     file:close(IODevice),
     {ok, TokensToProcess}.
+
 read(File, L) ->
     try
         case file:read_line(File) of

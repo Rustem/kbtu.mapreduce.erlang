@@ -1,0 +1,18 @@
+1. Refactor to distributed Map Reduce
+2. Attach Mongo helpers
+3. Define protocol of Map Reduce
+4. Use config file:
+    4.1 to connect to mongo
+    4.2 to connect to other nodes 
+
+5. Depending on messages size, think about net_kernel:start([Name, Type, HeartbeatInMilliseconds])
+     net_kernel:set_net_ticktime(S)
+
+     {global, Name} helps to resolve the conflict and make app distributed 
+
+6. use global module to register global processes
+
+7. Use custom resolve rules for processes with the same name
+
+
+8. Think about RPC
