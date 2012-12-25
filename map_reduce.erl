@@ -33,7 +33,7 @@ master(ParentPid, Map, Reduce, Input) ->
 
     % Wait for mappers to terminate
     MapResult = supervise(M, dict:new(), {Map, Input}),
-    print("Map finished. ~n"),
+    io:format("Map finished. ~p ~n", [MapResult]),
     % create reducers and delegate job one per each
     spawn_reducers(MasterPid, Reduce, dict:to_list(MapResult)),
     R = dict:size(MapResult),
@@ -68,6 +68,7 @@ supervise(0, Dict, _) -> Dict;
 supervise(N, Dict, {Fun, Input}) ->
     receive
         {K, V} ->
+            io:format("Map Result ~p ~p ~n",[K, V]),
             Dict1 = dict:append(K, V, Dict),
             supervise(N, Dict1, {Fun, Input});
         {'EXIT', _Who, normal} ->
