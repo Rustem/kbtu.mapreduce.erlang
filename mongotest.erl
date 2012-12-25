@@ -37,11 +37,11 @@ select(D, C) ->
 	mongo_cursor:rest(Cursor). % produces list of documents
 
 % insert into collection C document with key K and value V
-put(C, K, V) ->
+put(D, C, Doc) ->
 	Host = {localhost, 27017},
 	{ok, Conn} = mongo:connect (Host),
-	{ok, Data} = mongo:do(safe, master, Conn, erlang, fun() -> 
-		mongo:insert(C, {K, V}) end),
+	{ok, Data} = mongo:do(safe, master, Conn, D, fun() -> 
+		mongo:insert(C, Doc) end),
 	Data.
 
 % concatenating all the values to one text

@@ -3,14 +3,14 @@
 % define import libraries
 -import(utilities, [list_files/1, read/1, read/2, printDict/1, get_documents/2, text_to_words/1]).
 -import(map_reduce, [start_map_reduce/3]).
--import(mongotest, [select/2]).
+-import(mongotest, [select/2, put/3]).
 %% define constants
 -define(PUNCT_RE, " \t\n\r,.;:-!?\"'()").
 
 %% Word frequency word_counter
 count(ListOfDocuments, Key) ->
     CountFiles = get_documents(ListOfDocuments, Key),
-    Result = start_map_reduce(CountFiles, fun get_mapping_tags/3, fun tag_popularity/3).
+    start_map_reduce(CountFiles, fun get_mapping_tags/3, fun tag_popularity/3).
     % printDict(Result).
 
 
@@ -37,4 +37,13 @@ tag_popularity(Word, Counts, Emit) ->
 go(DatabaseName, CollectionName, Key) ->
     application:start(mongodb),
     ListOfDocuments = select(DatabaseName, CollectionName),
-    Result = count(ListOfDocuments, Key).
+    Result = count(ListOfDocuments, Key),
+    % dict:map(fun(K, V) -> put(DatabaseName, tags, K, V) end, Result).
+    Dictionary = dict:to_list(Result), % [{key, value}, {key, value}, ...]
+    lists:foreach(fun(X) -> 
+        put(erlang, tags, bson:document([
+            {'tag_name', list_to_atom(element(1, X))}, 
+            {'popularity', element(2, X)}
+        ])) end,
+    Dictionary).
+
